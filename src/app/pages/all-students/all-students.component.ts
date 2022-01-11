@@ -12,6 +12,7 @@ import { DepartmentsModel } from 'src/app/model/departments.model';
 import { StudentModel } from 'src/app/model/student.model';
 import { GetDepartmentsService } from 'src/app/services/get-departments.service';
 import { GetStudentService } from 'src/app/services/get-student.service';
+import { Params, Router,ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-all-students',
@@ -42,18 +43,19 @@ export class AllStudentsComponent implements OnInit {
 
   departments:DepartmentsModel[] = [];
 
-  filterDepartment: string = '';
-  filterSubjects: string = '';
-
-  showFilterBox: boolean = false;
+  filterSubjects: string[] = [];
 
   departmentText: string = 'All Department';
 
   isOpen = false;
 
+  plusMinus: string = '+';
+
   constructor(
     private studentSvc: GetStudentService,
-    private departmentsSvc: GetDepartmentsService
+    private departmentsSvc: GetDepartmentsService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -68,17 +70,26 @@ export class AllStudentsComponent implements OnInit {
   }
 
   showFilter(): void {
-    this.showFilterBox = true;
     this.isOpen = !this.isOpen;
-  }
-
-  hideFilter(): void {
-    this.showFilterBox = false;
+    if(this.isOpen){
+      this.plusMinus = '-';
+    }else{
+      this.plusMinus = '+';
+    }
   }
 
   // TODO add filter for subjects inside of filter
-  addDepartmentFilter(department: HTMLElement,filterName: string): void {
-    this.filterDepartment = filterName;
+  addFilter(department: HTMLElement,filterName: string): void {
+    // const queryParams: Params = { department: filterName };
+
+    // this.router.navigate(
+    //   [],
+    //   {
+    //     relativeTo: this.activatedRoute,
+    //     queryParams: queryParams,
+    //     queryParamsHandling: 'merge', // remove to replace all query params by provided
+    //   }
+    // );
 
     if(department.classList.contains('active')){
       department.classList.remove('active');
@@ -89,18 +100,37 @@ export class AllStudentsComponent implements OnInit {
     }else{
       department.classList.add('active');
       this.departmentText = filterName;
+
+      // if(this.department)
+
       this.students = this.students.filter(student => {
+
         return student.department == filterName;
       });
     }
+
   }
 
   addSubjectFilter(subject: HTMLElement,filterName: string):void {
+
     if(subject.classList.contains('active')){
       subject.classList.remove('active');
+      let index = this.filterSubjects.indexOf(filterName);
+      if (index > -1) {
+        this.filterSubjects.splice(index, 1);
+      }
     }else{
       subject.classList.add('active');
+      this.filterSubjects.push(filterName);
+
+      this.filteredStudents = this.students.filter(student => {
+        this.filterSubjects.forEach(filterSubject => {
+          return student.subject == filterSubject;
+        })
+      });
     }
+
+    console.log(this.filterSubjects)
   }
 
 }

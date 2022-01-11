@@ -2,11 +2,10 @@
   <header>
     <section class="filter-list">
       <div class="top-filter" [@openClose]="isOpen ? 'open' : 'closed'">
-        <!-- <a class="btn btn-close" (click)="hideFilter()">-</a> -->
-        <a class="btn btn-expand" (click)="showFilter()">+</a>
+        <a class="btn btn-expand" (click)="showFilter()">{{plusMinus}}</a>
         <div class="department-list">
           <div class="department" *ngFor="let department of departments">
-            <div #departmentClass class="dept-name" (click)="addDepartmentFilter(departmentClass,department.name)">{{ department.name }}</div>
+            <div #departmentClass class="dept-name" (click)="addFilter(departmentClass,department.name)" >{{department.name}}</div>
             <div class="subjects-wrapper">
               <div
                 class="subject-name"
@@ -20,12 +19,11 @@
         </div>
       </div>
       <div class="bottom-filter">
-        <!-- <a class="btn btn-expand" (click)="showFilter()">+</a> -->
         <div class="department-list">
           <div class="department">
-            <div class="dept-name active">{{departmentText}}</div>
+            <div class="dept-name active" [innerHTML]="departmentText"></div>
             <div class="subjects-wrapper">
-              <div class="subject-name active">All Subjects</div>
+                <div class="subject-name active" *ngFor="let filterSubject of filterSubjects">{{filterSubject}}</div>
             </div>
           </div>
         </div>
