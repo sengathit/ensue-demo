@@ -28,11 +28,20 @@ html, body{
   width: 90vw;
   top: 0;
   background: #DDD;
-  display: flex;
-  flex-direction: row;
+  // display: flex;
+  // flex-direction: row;
   padding: 1vw 3vw 1vw 1vw;
   box-sizing: border-box;
   box-shadow: 0 1vw 2vw rgba(0, 0, 0, .3);
+
+  .top-filter,.bottom-filter {
+    display: inline-block
+  }
+
+  .top-filter {
+    height: 0;
+    overflow: hidden;
+  }
 
   .department-list{
       display: flex;
@@ -67,6 +76,9 @@ html, body{
       text-overflow: ellipsis;
       &.active{
           background: #333;
+      }
+      .active {
+        background-color: skyblue;
       }
   }
 

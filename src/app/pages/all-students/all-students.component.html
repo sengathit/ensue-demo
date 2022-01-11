@@ -1,33 +1,35 @@
 <section>
   <header>
     <section class="filter-list">
-      <div *ngIf="showFilterBox == true; else displayFilter">
-        <a class="btn btn-close" (click)="hideFilter()">-</a>
+      <div class="top-filter" [@openClose]="isOpen ? 'open' : 'closed'">
+        <!-- <a class="btn btn-close" (click)="hideFilter()">-</a> -->
+        <a class="btn btn-expand" (click)="showFilter()">+</a>
         <div class="department-list">
           <div class="department" *ngFor="let department of departments">
-            <div class="dept-name" (click)="addDepartmentFilter(department.name)">{{ department.name }}</div>
+            <div #departmentClass class="dept-name" (click)="addDepartmentFilter(departmentClass,department.name)">{{ department.name }}</div>
             <div class="subjects-wrapper">
               <div
                 class="subject-name"
+                #subjectClass
                 *ngFor="let subject of department.subjects"
-              (click)="addSubjectFilter(subject)">
+              (click)="addSubjectFilter(subjectClass,subject)">
                 {{ subject }}
               </div>
             </div>
           </div>
         </div>
       </div>
-      <ng-template #displayFilter>
-        <a class="btn btn-expand" (click)="showFilter()">+</a>
+      <div class="bottom-filter">
+        <!-- <a class="btn btn-expand" (click)="showFilter()">+</a> -->
         <div class="department-list">
           <div class="department">
-            <div class="dept-name active">All Departments</div>
+            <div class="dept-name active">{{departmentText}}</div>
             <div class="subjects-wrapper">
               <div class="subject-name active">All Subjects</div>
             </div>
           </div>
         </div>
-      </ng-template>
+      </div>
     </section>
   </header>
   <div class="data-wrapper">
@@ -36,7 +38,6 @@
         <span class="name"
           >{{ student.familyName }}, {{ student.givenName }}</span
         >
-        <!-- <span class="dob">DOB: <span class="value">07/08/1990</span></span> -->
         <span class="dob"
           >DOB:
           <span class="value">{{ student.dob | date: "shortDate" }}</span></span
