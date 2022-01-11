@@ -2,7 +2,7 @@
   <header>
     <section class="filter-list">
       <div class="top-filter" [@openClose]="isOpen ? 'open' : 'closed'">
-        <a class="btn btn-expand" (click)="showFilter()">{{plusMinus}}</a>
+        <a class="btn btn-expand" (click)="toggleFilter()">{{plusMinus}}</a>
         <div class="department-list">
           <div class="department" *ngFor="let department of departments">
             <div #departmentClass class="dept-name" (click)="addFilter(departmentClass,department.name)" >{{department.name}}</div>
@@ -21,9 +21,12 @@
       <div class="bottom-filter">
         <div class="department-list">
           <div class="department">
-            <div class="dept-name active" [innerHTML]="departmentText"></div>
+            <div class="dept-name active" [innerHTML]="departmentText"><!-- Department Name goes here --></div>
             <div class="subjects-wrapper">
-                <div class="subject-name active" *ngFor="let filterSubject of filterSubjects">{{filterSubject}}</div>
+                <div class="subject-name active" *ngIf="filterSubjects.length == 0;else showFilters">All Subjects</div>
+                <ng-template #showFilters>
+                  <div #subjectClass class="subject-name  active" (click)="addFilter(subjectClass,filterSubject)" *ngFor="let filterSubject of filterSubjects">{{filterSubject}}</div>
+                </ng-template>
             </div>
           </div>
         </div>
@@ -31,7 +34,7 @@
     </section>
   </header>
   <div class="data-wrapper">
-    <ul class="filtered-student">
+    <ul class="filtered-student" *ngIf="students.length > 0;else noStudents">
       <li *ngFor="let student of students">
         <span class="name"
           >{{ student.familyName }}, {{ student.givenName }}</span
@@ -61,5 +64,8 @@
         >
       </li>
     </ul>
+    <ng-template #noStudents>
+      <div>Filter Found No Students</div>
+    </ng-template>
   </div>
 </section>

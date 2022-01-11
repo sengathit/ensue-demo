@@ -5,43 +5,46 @@ import {
   state,
   style,
   animate,
-  transition
+  transition,
 } from '@angular/animations';
 
 import { DepartmentsModel } from 'src/app/model/departments.model';
 import { StudentModel } from 'src/app/model/student.model';
 import { GetDepartmentsService } from 'src/app/services/get-departments.service';
 import { GetStudentService } from 'src/app/services/get-student.service';
-import { Params, Router,ActivatedRoute } from '@angular/router';
+import { Params, Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-all-students',
   templateUrl: './all-students.component.html',
   styleUrls: ['./all-students.component.scss'],
   animations: [
-    trigger('openClose',[
-      state('open', style({
-        height: '780px',
-        overflow: 'none'
-      })),
-      state('close', style({
-        height: '0',
-        overflow: 'hidden'
-      })),
-      transition('open => closed', [
-        animate('0.5s')
-      ]),
-      transition('closed => open', [
-        animate('0.5s')
-      ]),
-    ])
-  ]
+    trigger('openClose', [
+      state(
+        'open',
+        style({
+          height: '1170px',
+          overflow: 'none',
+        })
+      ),
+      state(
+        'close',
+        style({
+          height: '0',
+          overflow: 'hidden',
+        })
+      ),
+      transition('open => closed', [animate('0.5s')]),
+      transition('closed => open', [animate('0.5s')]),
+    ]),
+  ],
 })
 export class AllStudentsComponent implements OnInit {
   students: StudentModel[] = [];
-  filteredStudents: StudentModel[] = [];
 
-  departments:DepartmentsModel[] = [];
+  studentsFilterArray: StudentModel[] = [];
+
+  departments: DepartmentsModel[] = [];
 
   filterSubjects: string[] = [];
 
@@ -56,81 +59,131 @@ export class AllStudentsComponent implements OnInit {
     private departmentsSvc: GetDepartmentsService,
     private router: Router,
     private activatedRoute: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.departmentsSvc.GetDepartment().subscribe(data => {
+    this.departmentsSvc.GetDepartment().subscribe((data) => {
       this.departments = data.departments;
       console.log(this.departments);
     });
 
-    this.studentSvc.GetAll().subscribe(data => {
+    this.studentSvc.GetAll().subscribe((data) => {
       this.students = data.body.studentData.students;
     });
   }
 
-  showFilter(): void {
-    this.isOpen = !this.isOpen;
-    if(this.isOpen){
-      this.plusMinus = '-';
-    }else{
-      this.plusMinus = '+';
-    }
-  }
-
-  // TODO add filter for subjects inside of filter
-  addFilter(department: HTMLElement,filterName: string): void {
-    // const queryParams: Params = { department: filterName };
+  toggleFilter(): void {
+    // let queryParams: Params = { department: filterName };
 
     // this.router.navigate(
     //   [],
     //   {
     //     relativeTo: this.activatedRoute,
     //     queryParams: queryParams,
-    //     queryParamsHandling: 'merge', // remove to replace all query params by provided
+    //     queryParamsHandling: 'merge',
     //   }
     // );
 
-    if(department.classList.contains('active')){
-      department.classList.remove('active');
-      this.departmentText = 'All Department';
-      this.studentSvc.GetAll().subscribe(data => {
-        this.students = data.body.studentData.students;
-      });
-    }else{
-      department.classList.add('active');
-      this.departmentText = filterName;
-
-      // if(this.department)
-
-      this.students = this.students.filter(student => {
-
-        return student.department == filterName;
-      });
+    this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      this.plusMinus = '-';
+    } else {
+      this.plusMinus = '+';
     }
 
+    if(this.departmentText == 'All Department' && this.filterSubjects.length == 0){
+      this.students = [];
+      this.studentSvc.GetAll().subscribe((data) => {
+        let filteredStudents: StudentModel[] = data.body.studentData.students;
+        for(let i = 0;i < filteredStudents.length; i++){
+            this.students.push(filteredStudents[i]);
+          }
+      });
+    }
+    else if(this.departmentText == 'All Department' && this.filterSubjects.length > 0){
+      this.students = [];
+      this.studentSvc.GetAll().subscribe(data => {
+
+        let filteredStudents: StudentModel[] = data.body.studentData.students;
+
+        for(let i = 0;i < filteredStudents.length; i++){
+          if(this.filterSubjects.includes(filteredStudents[i].subject)){
+            this.students.push(filteredStudents[i]);
+          }
+        }
+      });
+    }
+    else if(this.departmentText != 'All Department' && this.filterSubjects.length == 0){
+      this.students = [];
+      this.studentSvc.GetAll().subscribe(data => {
+          let filteredStudents: StudentModel[] = data.body.studentData.students;
+
+          for(let i = 0;i < filteredStudents.length; i++){
+            if(filteredStudents[i].department == this.departmentText){
+              this.students.push(filteredStudents[i]);
+            }
+          }
+      });
+
+    }
+    else if(this.departmentText != 'All Department' && this.filterSubjects.length > 0){
+      this.students = [];
+      this.studentSvc.GetAll().subscribe((data) => {
+        let filteredStudents: StudentModel[] = data.body.studentData.students;
+
+        for(let i = 0;i < filteredStudents.length; i++){
+          if(this.filterSubjects.includes(filteredStudents[i].subject)){
+            this.students.push(filteredStudents[i]);
+          }
+        }
+      });
+    }
   }
 
-  addSubjectFilter(subject: HTMLElement,filterName: string):void {
+  addFilter(department: HTMLElement, filterName: string): void {
+    if (department.classList.contains('active')) {
+      department.classList.remove('active');
+      this.departmentText = 'All Department';
+      this.removeFromFilter(this.filterSubjects,filterName);
+    } else {
+      department.classList.add('active');
+      this.departmentText = filterName;
+    }
+  }
 
-    if(subject.classList.contains('active')){
+  addSubjectFilter(subject: HTMLElement, filterName: string): void {
+    if (subject.classList.contains('active')) {
       subject.classList.remove('active');
       let index = this.filterSubjects.indexOf(filterName);
       if (index > -1) {
         this.filterSubjects.splice(index, 1);
       }
-    }else{
+    } else {
       subject.classList.add('active');
       this.filterSubjects.push(filterName);
-
-      this.filteredStudents = this.students.filter(student => {
-        this.filterSubjects.forEach(filterSubject => {
-          return student.subject == filterSubject;
-        })
-      });
     }
-
-    console.log(this.filterSubjects)
   }
 
+  removeFromFilter(arr: string[], filter: string): void {
+    const index = arr.indexOf(filter);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+  }
+
+  addToFilter(arr:string[],filter: string): void {
+    arr.push(filter);
+  }
+
+  filterBySubject(arr: string[],filter: string) {
+    return arr.forEach(subject => {
+      return subject == filter;
+    })
+  }
+
+  getAllStudents(){
+    return this.studentSvc.GetAll().subscribe((data) => {
+      this.students = data.body.studentData.students;
+    });
+  }
 }
