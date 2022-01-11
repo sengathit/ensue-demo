@@ -1,0 +1,46 @@
+<div class="body-wrapper">
+  <header>
+      <section class="filter-list">
+              <a class="btn btn-expand" [routerLink]="['/departments']">+</a>
+              <div class="department-list">
+                  <div class="department">
+                      <div class="dept-name active">Physics</div>
+                      <div class="subjects-wrapper">
+                          <div class="subject-name active">Dynamics</div>
+                          <div class="subject-name">Physical quantities and units</div>
+                          <div class="subject-name">Measurement techniques</div>
+                          <div class="subject-name">Forces, density and pressure</div>
+                          <div class="subject-name">Work, energy and power</div>
+                          <div class="subject-name">Deformation of solids</div>
+                          <div class="subject-name">Waves</div>
+                          <div class="subject-name">Superposition</div>
+                          <div class="subject-name">Electric Fields</div>
+                          <div class="subject-name">Current of electricity</div>
+                          <div class="subject-name">D.C. circuits</div>
+                          <div class="subject-name">Particle and nuclear physics</div>
+                          <div class="more-less"><a [routerLink]="['/view3']">[collapse]</a></div>
+                      </div>
+                  </div>
+              </div>
+      </section>
+  </header>
+  <section>
+      <div class="data-wrapper">
+          <ul class="filtered-student">
+                  <li>
+                  <span class="name">Ruiz, Jackie</span>
+                  <span class="dob">DOB: <span class="value">07/08/1990</span></span>
+                  <span class="admit-date">Admitted: <span class="value">May 04, 2016</span></span>
+                  <span class="grad-date">Anticipated Graduation: <span class="value">May 2018</span></span>
+                  <span class="mentor">Mentor: <span class="value">Conway, Aaron</span></span>
+              </li>
+          </ul>
+      </div>
+  </section>
+  <!--Stretch Goal # 2 Tooltip-->
+  <!--
+  <div class="department-name-tooltip">
+      <span class="tooltip-content">A very very long department name</span>
+  </div>
+  -->
+</div>

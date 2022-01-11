@@ -1,0 +1,136 @@
+<div class="body-wrapper">
+  <header>
+    <section class="filter-list expanded">
+      <a class="btn btn-close" [routerLink]="['/all-students']">-</a>
+      <div class="department-list">
+        <div class="department" *ngFor="let department of departments">
+          <div class="dept-name">{{ department.name }}</div>
+          <div class="subjects-wrapper">
+            <div
+              class="subject-name"
+              *ngFor="let subject of department.subjects"
+            >
+              {{ subject }}
+            </div>
+          </div>
+        </div>
+        <div class="department all">
+          <div class="dept-name active">All Departments</div>
+          <div class="subjects-wrapper">
+            <div class="subject-name active">All Subjects</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </header>
+  <section>
+    <div class="data-wrapper">
+      <ul class="filtered-student">
+        <li>
+          <span class="name">Ruiz, Jackie</span>
+          <span class="dob">DOB: <span class="value">07/08/1990</span></span>
+          <span class="admit-date"
+            >Admitted: <span class="value">May 04, 2016</span></span
+          >
+          <span class="grad-date"
+            >Anticipated Graduation: <span class="value">May 2018</span></span
+          >
+          <span class="mentor"
+            >Mentor: <span class="value">Conway, Aaron</span></span
+          >
+        </li>
+        <li>
+          <span class="name">Ruiz, Jackie</span>
+          <span class="dob">DOB: <span class="value">07/08/1990</span></span>
+          <span class="admit-date"
+            >Admitted: <span class="value">May 04, 2016</span></span
+          >
+          <span class="grad-date"
+            >Anticipated Graduation: <span class="value">May 2018</span></span
+          >
+          <span class="mentor"
+            >Mentor: <span class="value">Conway, Aaron</span></span
+          >
+        </li>
+        <li>
+          <span class="name">Ruiz, Jackie</span>
+          <span class="dob">DOB: <span class="value">07/08/1990</span></span>
+          <span class="admit-date"
+            >Admitted: <span class="value">May 04, 2016</span></span
+          >
+          <span class="grad-date"
+            >Anticipated Graduation: <span class="value">May 2018</span></span
+          >
+          <span class="mentor"
+            >Mentor: <span class="value">Conway, Aaron</span></span
+          >
+        </li>
+        <li>
+          <span class="name">Ruiz, Jackie</span>
+          <span class="dob">DOB: <span class="value">07/08/1990</span></span>
+          <span class="admit-date"
+            >Admitted: <span class="value">May 04, 2016</span></span
+          >
+          <span class="grad-date"
+            >Anticipated Graduation: <span class="value">May 2018</span></span
+          >
+          <span class="mentor"
+            >Mentor: <span class="value">Conway, Aaron</span></span
+          >
+        </li>
+        <li>
+          <span class="name">Ruiz, Jackie</span>
+          <span class="dob">DOB: <span class="value">07/08/1990</span></span>
+          <span class="admit-date"
+            >Admitted: <span class="value">May 04, 2016</span></span
+          >
+          <span class="grad-date"
+            >Anticipated Graduation: <span class="value">May 2018</span></span
+          >
+          <span class="mentor"
+            >Mentor: <span class="value">Conway, Aaron</span></span
+          >
+        </li>
+        <li>
+          <span class="name">Ruiz, Jackie</span>
+          <span class="dob">DOB: <span class="value">07/08/1990</span></span>
+          <span class="admit-date"
+            >Admitted: <span class="value">May 04, 2016</span></span
+          >
+          <span class="grad-date"
+            >Anticipated Graduation: <span class="value">May 2018</span></span
+          >
+          <span class="mentor"
+            >Mentor: <span class="value">Conway, Aaron</span></span
+          >
+        </li>
+        <li>
+          <span class="name">Ruiz, Jackie</span>
+          <span class="dob">DOB: <span class="value">07/08/1990</span></span>
+          <span class="admit-date"
+            >Admitted: <span class="value">May 04, 2016</span></span
+          >
+          <span class="grad-date"
+            >Anticipated Graduation: <span class="value">May 2018</span></span
+          >
+          <span class="mentor"
+            >Mentor: <span class="value">Conway, Aaron</span></span
+          >
+        </li>
+        <li>
+          <span class="name">Ruiz, Jackie</span>
+          <span class="dob">DOB: <span class="value">07/08/1990</span></span>
+          <span class="admit-date"
+            >Admitted: <span class="value">May 04, 2016</span></span
+          >
+          <span class="grad-date"
+            >Anticipated Graduation: <span class="value">May 2018</span></span
+          >
+          <span class="mentor"
+            >Mentor: <span class="value">Conway, Aaron</span></span
+          >
+        </li>
+      </ul>
+    </div>
+  </section>
+</div>
