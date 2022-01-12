@@ -1,4 +1,5 @@
-import { Component, DoCheck, OnInit, SimpleChanges } from '@angular/core';
+import { Component, DoCheck, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {TooltipPosition} from '@angular/material/tooltip';
 
 import {
   trigger,
@@ -13,6 +14,7 @@ import { StudentModel } from 'src/app/model/student.model';
 import { GetDepartmentsService } from 'src/app/services/get-departments.service';
 import { GetStudentService } from 'src/app/services/get-student.service';
 import { Params, Router, ActivatedRoute } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-all-students',
@@ -38,6 +40,7 @@ import { Params, Router, ActivatedRoute } from '@angular/router';
       transition('closed => open', [animate('0.5s')]),
     ]),
   ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class AllStudentsComponent implements OnInit {
   students: StudentModel[] = [];
@@ -53,6 +56,9 @@ export class AllStudentsComponent implements OnInit {
   isOpen = false;
 
   plusMinus: string = '+';
+
+  positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
+  position = new FormControl(this.positionOptions[0]);
 
   constructor(
     private studentSvc: GetStudentService,
@@ -73,7 +79,11 @@ export class AllStudentsComponent implements OnInit {
   }
 
   toggleFilter(): void {
-    // let queryParams: Params = { department: filterName };
+    // this.router.navigate(['/books'], { queryParams: { orderby: 'price',category:'fiction' } });
+
+
+
+
 
     // this.router.navigate(
     //   [],
@@ -99,6 +109,7 @@ export class AllStudentsComponent implements OnInit {
             this.students.push(filteredStudents[i]);
           }
       });
+
     }
     else if(this.departmentText == 'All Department' && this.filterSubjects.length > 0){
       this.students = [];

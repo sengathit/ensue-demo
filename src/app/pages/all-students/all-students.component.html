@@ -5,7 +5,20 @@
         <a class="btn btn-expand" (click)="toggleFilter()">{{plusMinus}}</a>
         <div class="department-list">
           <div class="department" *ngFor="let department of departments">
-            <div #departmentClass class="dept-name" (click)="addFilter(departmentClass,department.name)" >{{department.name}}</div>
+            <!-- <button mat-raised-button
+              matTooltip="Info about the action"
+              aria-label="Button that displays a tooltip when focused or hovered over">
+        Action
+      </button> -->
+            <div
+              #departmentClass
+              mat-raised-button
+              matTooltipPosition="right"
+              [matTooltip]="department.name"
+              matTooltipClass="tooltip-blue"
+              aria-label="Button that shows a red tooltip"
+              class="dept-name"
+              (click)="addFilter(departmentClass,department.name)" >{{department.name}}</div>
             <div class="subjects-wrapper">
               <div
                 class="subject-name"
