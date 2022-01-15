@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, DoCheck, ElementRef, OnInit, SimpleChanges, ViewChild, ViewEncapsulation,AfterViewInit } from '@angular/core';
 import {TooltipPosition} from '@angular/material/tooltip';
 
 import {
@@ -25,7 +25,25 @@ import { FormControl } from '@angular/forms';
       state(
         'open',
         style({
-          height: '1170px',
+          height: 'auto',
+          overflow: 'none',
+        })
+      ),
+      state(
+        'close',
+        style({
+          height: '0',
+          overflow: 'hidden',
+        })
+      ),
+      transition('open => closed', [animate('0.5s')]),
+      transition('closed => open', [animate('0.5s')]),
+    ]),
+    trigger('showMoreFilter', [
+      state(
+        'open',
+        style({
+          height: 'auto',
           overflow: 'none',
         })
       ),
@@ -54,46 +72,33 @@ export class AllStudentsComponent implements OnInit {
   departmentText: string = 'All Department';
 
   isOpen = false;
+  showMore: boolean = false;
 
   plusMinus: string = '+';
 
-  positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
-  position = new FormControl(this.positionOptions[0]);
+  @ViewChild("department",{static: true}) department: ElementRef = new ElementRef(ElementRef);
+  @ViewChild("filterlist",{static: true}) filterlist: ElementRef = new ElementRef(ElementRef);
+  @ViewChild("subjectContainer",{static: true}) subjectContainer: ElementRef = new ElementRef(ElementRef);
 
   constructor(
     private studentSvc: GetStudentService,
-    private departmentsSvc: GetDepartmentsService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private departmentsSvc: GetDepartmentsService
   ) {}
 
   ngOnInit(): void {
+    this.students = [];
     this.departmentsSvc.GetDepartment().subscribe((data) => {
       this.departments = data.departments;
-      console.log(this.departments);
     });
 
     this.studentSvc.GetAll().subscribe((data) => {
       this.students = data.body.studentData.students;
     });
+
   }
 
   toggleFilter(): void {
-    // this.router.navigate(['/books'], { queryParams: { orderby: 'price',category:'fiction' } });
-
-
-
-
-
-    // this.router.navigate(
-    //   [],
-    //   {
-    //     relativeTo: this.activatedRoute,
-    //     queryParams: queryParams,
-    //     queryParamsHandling: 'merge',
-    //   }
-    // );
-
+    this.students = [];
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
       this.plusMinus = '-';
@@ -102,19 +107,16 @@ export class AllStudentsComponent implements OnInit {
     }
 
     if(this.departmentText == 'All Department' && this.filterSubjects.length == 0){
-      this.students = [];
       this.studentSvc.GetAll().subscribe((data) => {
         let filteredStudents: StudentModel[] = data.body.studentData.students;
         for(let i = 0;i < filteredStudents.length; i++){
             this.students.push(filteredStudents[i]);
           }
       });
-
+      console.log(this.students.length)
     }
     else if(this.departmentText == 'All Department' && this.filterSubjects.length > 0){
-      this.students = [];
       this.studentSvc.GetAll().subscribe(data => {
-
         let filteredStudents: StudentModel[] = data.body.studentData.students;
 
         for(let i = 0;i < filteredStudents.length; i++){
@@ -123,9 +125,9 @@ export class AllStudentsComponent implements OnInit {
           }
         }
       });
+      console.log(this.students.length)
     }
     else if(this.departmentText != 'All Department' && this.filterSubjects.length == 0){
-      this.students = [];
       this.studentSvc.GetAll().subscribe(data => {
           let filteredStudents: StudentModel[] = data.body.studentData.students;
 
@@ -135,10 +137,9 @@ export class AllStudentsComponent implements OnInit {
             }
           }
       });
-
+      console.log(this.students.length)
     }
     else if(this.departmentText != 'All Department' && this.filterSubjects.length > 0){
-      this.students = [];
       this.studentSvc.GetAll().subscribe((data) => {
         let filteredStudents: StudentModel[] = data.body.studentData.students;
 
@@ -149,6 +150,7 @@ export class AllStudentsComponent implements OnInit {
         }
       });
     }
+    console.log(this.students.length)
   }
 
   addFilter(department: HTMLElement, filterName: string): void {
@@ -192,9 +194,8 @@ export class AllStudentsComponent implements OnInit {
     })
   }
 
-  getAllStudents(){
-    return this.studentSvc.GetAll().subscribe((data) => {
-      this.students = data.body.studentData.students;
-    });
+  displayMoreFilters(): void {
+    this.showMore = !this.showMore;
   }
+
 }

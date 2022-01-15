@@ -1,15 +1,10 @@
 <section>
   <header>
-    <section class="filter-list">
+    <section #filterlist class="filter-list">
       <div class="top-filter" [@openClose]="isOpen ? 'open' : 'closed'">
         <a class="btn btn-expand" (click)="toggleFilter()">{{plusMinus}}</a>
         <div class="department-list">
           <div class="department" *ngFor="let department of departments">
-            <!-- <button mat-raised-button
-              matTooltip="Info about the action"
-              aria-label="Button that displays a tooltip when focused or hovered over">
-        Action
-      </button> -->
             <div
               #departmentClass
               mat-raised-button
@@ -18,7 +13,7 @@
               matTooltipClass="tooltip-blue"
               aria-label="Button that shows a red tooltip"
               class="dept-name"
-              (click)="addFilter(departmentClass,department.name)" >{{department.name}}</div>
+              (click)="addFilter(departmentClass,department.name)">{{department.name}}</div>
             <div class="subjects-wrapper">
               <div
                 class="subject-name"
@@ -33,14 +28,16 @@
       </div>
       <div class="bottom-filter">
         <div class="department-list">
-          <div class="department">
-            <div class="dept-name active" [innerHTML]="departmentText"><!-- Department Name goes here --></div>
-            <div class="subjects-wrapper">
-                <div class="subject-name active" *ngIf="filterSubjects.length == 0;else showFilters">All Subjects</div>
+          <div #departmentcontainer id="department"  [@showMoreFilter]="showMore ? 'open' : 'closed'">
+            <div #department class="dept-name active" [innerHTML]="departmentText"><!-- Department Name goes here --></div>
+            <div #subjectContainer class="subjects-wrapper">
+                <div class="subject-name-active-filter active" *ngIf="filterSubjects.length == 0;else showFilters">All Subjects</div>
                 <ng-template #showFilters>
-                  <div #subjectClass class="subject-name  active" (click)="addFilter(subjectClass,filterSubject)" *ngFor="let filterSubject of filterSubjects">{{filterSubject}}</div>
+                  <div #subjectClass class="subject-name-active-filter active"  [ngStyle]="{'margin-bottom' : showMore ? '20px' : '0px'}" *ngFor="let filterSubject of filterSubjects; let i = index">{{filterSubject}}</div>
+
                 </ng-template>
             </div>
+            <div *ngIf="filterSubjects.length > 5"><p class="showMoreFilters" (click)="displayMoreFilters()">+ {{filterSubjects.length - 5}} more</p></div>
           </div>
         </div>
       </div>

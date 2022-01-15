@@ -1,4 +1,40 @@
-.tooltip-blue {
-  background: lightblue;
-  font-size: 16px;
+
+  .tooltip-blue {
+    background: lightblue;
+    font-size: 16px;
+  }
+#department {
+  display: flex;
+  flex-shrink: 0;
+    height: 76px;
+    overflow: hidden;
+  .subject-name-active-filter {
+    background: white;
+    color: blueviolet;
+    font-weight: bold;
+    font-size: 1vw;
+    font-weight: bold;
+    padding: 1vw;
+    border-radius: 0.25vw;
+    flex: none;
+    height: 1vw;
+    width: 10vw;
+    margin-right: 1vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+  .showMoreFilters {
+    color: #00f;
+    font-weight: bold;
+    cursor: pointer;
+    &:hover {
+      font-style: italic;
+      text-decoration: underline;
+    }
+  }
+
 }
+
+
